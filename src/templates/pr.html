@@ -42,10 +42,9 @@
 
     var curr = 0;
     var prs = undefined;
-    let time = {{ pr_time }} * 1000;
     let fetch_time = {{ pr_fetch_time }} * 1000;
 
-    function next_pr() {
+    function next_pr(time) {
       body = document.getElementById("body");
 
       // No PR -> show dtek logo
@@ -75,7 +74,7 @@
         body.style.backgroundImage = "none";
         body.appendChild(video);
 
-	time = video.duration;
+	return video.duration;
       }
       else {
         // Image
@@ -86,6 +85,8 @@
 
       curr++;
       curr %= prs.length;
+
+      return time;
     }
 
     // Get list of PRs from /pr
@@ -105,11 +106,21 @@
       }
     }
 
-    // How long a PR is shown
-    setInterval(next_pr, time);
+    // Because async is a pain
+    function sleep(ms) {
+      let waiting = true;
+      setTimeout(() => waiting = false, ms);
+      while (waiting) {}
+    }
 
     // How often the PR list is updated
     setInterval(get_prs, fetch_time);
+
+    // Loop instead of an interval so that the interval can change
+    while (true) {
+      let time = next_pr({{pr_time}} * 1000);
+      sleep(time);
+    }
 
   </script>
 </head>
