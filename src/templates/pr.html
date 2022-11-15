@@ -42,6 +42,8 @@
 
     var curr = 0;
     var prs = undefined;
+    let time = {{ pr_time }} * 1000;
+    let fetch_time = {{ pr_fetch_time }} * 1000;
 
     function next_pr() {
       body = document.getElementById("body");
@@ -72,6 +74,8 @@
         body.style.backgroundColor = "#fa6607";
         body.style.backgroundImage = "none";
         body.appendChild(video);
+
+	time = video.duration;
       }
       else {
         // Image
@@ -102,10 +106,10 @@
     }
 
     // How long a PR is shown
-    setInterval(next_pr, {{ pr_time }} * 1000);
+    setInterval(next_pr, time);
 
     // How often the PR list is updated
-    setInterval(get_prs, {{ pr_fetch_time }} * 1000)
+    setInterval(get_prs, fetch_time);
 
   </script>
 </head>
