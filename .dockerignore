@@ -1,0 +1,13 @@
+.svelte-kit
+.vscode
+node_modules
+.dockerignore
+.env
+.eslintignore
+.eslintrc.cjs
+.gitignore
+.npmrc
+.prettierignore
+.prettierrc
+Dockerfile
+README.md
