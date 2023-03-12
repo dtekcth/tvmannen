@@ -38,6 +38,9 @@
 	});
 </script>
 
+<svelte:head>
+	<title>TV-Mannen</title>
+</svelte:head>
 <svelte:body on:keypress={onKeypress} />
 
 {#if data.prs.length === 0}
