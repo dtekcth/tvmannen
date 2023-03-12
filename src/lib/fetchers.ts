@@ -4,10 +4,7 @@ import type { Pr } from './types';
 function parsePr(pr: Pr) {
 	return {
 		...pr,
-		pr: fileIdToUrl(pr.pr),
-		date_created: new Date(pr.date_created),
-		start_date: new Date(pr.start_date),
-		end_date: new Date(pr.end_date)
+		pr: fileIdToUrl(pr.pr)
 	};
 }
 

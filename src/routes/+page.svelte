@@ -50,7 +50,13 @@
 	</div>
 {:else}
 	<div class="wrapper black">
-		<img src={currentPr.pr} alt={currentPr.description} />
+		{#if currentPr.video}
+			<video src={currentPr.pr} autoplay muted loop>
+				<p>Could not play the video</p>
+			</video>
+		{:else}
+			<img src={currentPr.pr} alt={currentPr.description} />
+		{/if}
 	</div>
 {/if}
 
@@ -76,7 +82,8 @@
 		font-weight: bold;
 	}
 
-	img {
+	img,
+	video {
 		margin-inline: auto;
 		display: block;
 		max-width: 100%;
