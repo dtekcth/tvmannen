@@ -10,6 +10,8 @@ from config import Config as config
 app = Flask(__name__)
 app.config.from_object(config)
 
+app.app_context().push()
+
 db = SQLAlchemy(app)
 db.create_all()
 
