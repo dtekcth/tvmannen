@@ -38,6 +38,7 @@
 <fieldset>
   <legend>Create user</legend>
   <form method="post" enctype="multipart/form-data">
+    {{ form.csrf_token() }}
     {{ form.hidden_tag() }}
 
     <div class="center-row row responsive-label">
