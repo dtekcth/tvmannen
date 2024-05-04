@@ -4,7 +4,7 @@ curdir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     SECRET_KEY = os.environ["SECRET_KEY"]
-    MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH", 5 * 1024 * 1024))
+    MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH", 5 * 1024**2))
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URI",
         "sqlite:///" + os.path.join(curdir, "db.db"),

@@ -82,7 +82,10 @@ def admin():
         pr = PR.query.all()
     else:
         pr = PR.query.filter_by(user_id=current_user.id)
-    return render_template("admin.html", user=current_user, pr_list=pr, form=form)
+
+    max_size_mb = config.MAX_CONTENT_LENGTH // 1024**2
+
+    return render_template("admin.html", user=current_user, pr_list=pr, form=form, max_size_mb=max_size_mb)
 
 # Deletes a PR on request if the current user has the right permissions
 # Takes PR id "id" as argument
