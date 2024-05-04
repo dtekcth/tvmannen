@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect, request, json
+from flask import Flask, render_template, flash, redirect, request, json, send_from_directory
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -7,7 +7,7 @@ import os
 
 from config import Config as config
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=None)
 app.config.from_object(config)
 
 app.app_context().push()
@@ -63,3 +63,7 @@ def pr():
         [("/static/pr/" + user.file_name) 
             for user in PR.query.filter(PR.start_date < datetime.now()).all()]
         )
+
+@app.route('/static/pr/<path:path>')
+def static(path):
+    return send_from_directory(config.UPLOAD_FOLDER, path)
