@@ -2,7 +2,7 @@ A website for displaying information and advertisements "PRs". Created with Pyth
 ## Usage
 - ```/``` displays PRs.
 - ```/admin``` is the administrator interface for managing PRs. Can be accessed by any registered user. Users with the ```admin``` role will be able to manage all PRs while users with the ```pr``` role will only be able to access their own.
-- ```/users``` is the user management interface, available only for users with the ```admin``` role.
+- ```/admin/users``` is the user management interface, available only for users with the ```admin``` role.
 - ```/pr``` returns a list of relative links to PRs to be shown in JSON format.
 
 ### Dates
