@@ -7,7 +7,7 @@ import os
 
 from config import Config as config
 
-app = Flask(__name__, static_folder=None)
+app = Flask(__name__)
 app.config.from_object(config)
 
 app.app_context().push()
@@ -55,15 +55,15 @@ def pr():
     priority = PR.query.filter(PR.priority==1, PR.start_date < datetime.now()).first() 
     if priority != None:
         return json.jsonify(
-            ["/static/pr/" + priority.file_name]
+            ["/img/" + priority.file_name]
         )
 
     # Return all active PRs
     return json.jsonify(
-        [("/static/pr/" + user.file_name) 
+        [("/img/" + user.file_name) 
             for user in PR.query.filter(PR.start_date < datetime.now()).all()]
         )
 
-@app.route('/static/pr/<path:path>')
-def static(path):
+@app.route('/img/<path:path>')
+def static_pr(path):
     return send_from_directory(config.UPLOAD_FOLDER, path)

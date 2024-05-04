@@ -26,7 +26,7 @@
 </tr>
 {% for pr in pr_list %}
   <tr>
-    <td data-label="Description:">  <a href="/static/pr/{{pr.file_name}}">{{ pr.desc }}</a></td>
+    <td data-label="Description:">  <a href="/img/{{pr.file_name}}">{{ pr.desc }}</a></td>
     <td data-label="Start time:">   {{ pr.start_date.strftime('%Y-%m-%d, %H:%M') }}</td>
     <td data-label="End time:">     {{ pr.end_date.strftime('%Y-%m-%d, %H:%M') }}</td>
     <td data-label="Priority:">     {{ pr.priority }}</td>
