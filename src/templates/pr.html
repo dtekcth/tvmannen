@@ -100,6 +100,13 @@
           next_pr();
       }
     }
+    
+    // Naively switch to next PR when pressing spacebar
+    document.onkeypress = function (e) {
+    if (e.keyCode === 32) {
+        next_pr()
+      }
+    }; 
 
     // How long a PR is shown
     setInterval(next_pr, {{ pr_time }} * 1000);
