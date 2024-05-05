@@ -16,7 +16,6 @@
 <fieldset>
 <legend>Sign in</legend>
 <form action="" method="post" novalidate>
-  {{ form.csrf_token() }}
   {{ form.hidden_tag() }}
   <p>
     {{ form.username.label }}<br>
