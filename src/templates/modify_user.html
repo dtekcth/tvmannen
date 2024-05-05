@@ -5,7 +5,6 @@
 <fieldset>
 <legend>Modify user {{ user.username }}</legend>
 <form action="" method="post">
-  {{ form.csrf_token() }}
   {{ form.hidden_tag() }}
   <p>
     {{ form.password.label }}<br>

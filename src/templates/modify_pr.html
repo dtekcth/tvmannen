@@ -5,7 +5,6 @@
 <fieldset>
 <legend>Modify PR {{ pr.desc }}</legend>
 <form action="" method="post">
-  {{ form.csrf_token() }}
   {{ form.hidden_tag() }}
   <p>
     {{ form.start_date.label }}<br>
