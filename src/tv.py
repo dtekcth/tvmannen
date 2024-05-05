@@ -10,10 +10,9 @@ from config import Config as config
 app = Flask(__name__)
 app.config.from_object(config)
 
-app.app_context().push()
-
-db = SQLAlchemy(app)
-db.create_all()
+with app.app_context():
+    db = SQLAlchemy(app)
+    db.create_all()
 
 login_manager = LoginManager(app)
 login_manager.login_view = '/login'
@@ -21,11 +20,12 @@ login_manager.login_view = '/login'
 from data import PR, User, create_db
 
 # Init user table if it doesn't exist
-try:
-    User.query.all()
-except:
-    print("Data base does not exist, creating a new one")
-    create_db()
+with app.app_context():
+    try:
+        User.query.all()
+    except:
+        print("Data base does not exist, creating a new one")
+        create_db()
 
 from users import users_page
 app.register_blueprint(users_page)
