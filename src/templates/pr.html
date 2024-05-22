@@ -24,7 +24,7 @@
       flex-direction: column;
       text-align: center;
       font-family: Helvetica, Arial, Sans-Serif;
-      background-color: #fa6607;
+      background-color: bg-orange-500;
       font-size: 3em;
       background-repeat: no-repeat;
     }
@@ -49,7 +49,7 @@
       // No PR -> show dtek logo
       if (prs.length < 1) {
         body.style.backgroundImage = "url(https://dtek.se/static/datalogo.svg)";
-        body.style.backgroundColor = "#fa6607";
+        body.style.backgroundColor = "bg-orange-500";
         return;
       }
 
@@ -69,14 +69,14 @@
         video.append(source);
 
         body.innerHTML = "";
-        body.style.backgroundColor = "#fa6607";
+        body.style.backgroundColor = "bg-orange-500";
         body.style.backgroundImage = "none";
         body.appendChild(video);
       }
       else {
         // Image
         body.innerHTML = "";
-        body.style.backgroundColor = "#fa6607";
+        body.style.backgroundColor = "bg-orange-500";
         body.style.backgroundImage = "url(" + prs[curr] + ")";
       }
 
