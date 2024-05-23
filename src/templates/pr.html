@@ -54,7 +54,6 @@
       // No PR -> show dtek logo
       if (prs == undefined || prs.length < 1) {
         body.style.backgroundImage = "url(https://dtek.se/static/datalogo.svg)";
-        body.style.backgroundColor = "rgb(249 115 22)";
         var time_to_play = {{ pr_time }} * 1000;
         timeout = setTimeout(next_pr, time_to_play);
         return;
@@ -77,14 +76,12 @@
         };
 
         body.innerHTML = "";
-        body.style.backgroundColor = "rgb(249 115 22)";
         body.style.backgroundImage = "none";
         body.appendChild(video);
       }
       else {
         // Image
         body.innerHTML = "";
-        body.style.backgroundColor = "rgb(249 115 22)";
         body.style.backgroundImage = "url(" + prs[curr] + ")";
         var time_to_play = {{ pr_time }} * 1000;
         timeout = setTimeout(next_pr, time_to_play);
