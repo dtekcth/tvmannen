@@ -42,14 +42,21 @@
 
     var curr = 0;
     var prs = undefined;
+    var timeout = undefined;
 
     function next_pr() {
       body = document.getElementById("body");
 
+      if (timeout != undefined) {
+        clearTimeout(timeout);
+      }
+
       // No PR -> show dtek logo
-      if (prs.length < 1) {
+      if (prs == undefined || prs.length < 1) {
         body.style.backgroundImage = "url(https://dtek.se/static/datalogo.svg)";
         body.style.backgroundColor = "rgb(249 115 22)";
+        var time_to_play = {{ pr_time }} * 1000;
+        timeout = setTimeout(next_pr, time_to_play);
         return;
       }
 
@@ -62,11 +69,12 @@
         video.autoplay = true;
         video.loop = true;
         video.muted = true;
-
-        var source = document.createElement('source');
-        source.src = prs[curr];
-        source.type = "video/mp4"
-        video.append(source);
+        video.src = prs[curr];
+        video.onloadedmetadata = () => {
+          var times_to_repeat = Math.ceil({{ pr_time }} / video.duration);
+          var time_to_play = Math.floor(times_to_repeat * video.duration * 1000);
+          timeout = setTimeout(next_pr, time_to_play);
+        };
 
         body.innerHTML = "";
         body.style.backgroundColor = "rgb(249 115 22)";
@@ -78,6 +86,8 @@
         body.innerHTML = "";
         body.style.backgroundColor = "rgb(249 115 22)";
         body.style.backgroundImage = "url(" + prs[curr] + ")";
+        var time_to_play = {{ pr_time }} * 1000;
+        timeout = setTimeout(next_pr, time_to_play);
       }
 
       curr++;
@@ -96,8 +106,9 @@
         prs = request.response;
 
         // Call next_pr on first load
-        if (prev_prs === undefined)
+        if (prev_prs === undefined) {
           next_pr();
+        }
       }
     }
     
@@ -108,12 +119,8 @@
       }
     }; 
 
-    // How long a PR is shown
-    setInterval(next_pr, {{ pr_time }} * 1000);
-
     // How often the PR list is updated
     setInterval(get_prs, {{ pr_fetch_time }} * 1000)
-
   </script>
 </head>
 
