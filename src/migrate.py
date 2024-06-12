@@ -8,8 +8,11 @@ def ensure_migration_table():
         table = db.session.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='migration'")
         if len(table.fetchall()) != 1:
             print("Creating migration table")
-            db.session.execute("CREATE TABLE migration (version INTEGER)")
-            db.session.execute("INSERT INTO migration (version) VALUES (0)")
+            db.session.execute("CREATE TABLE migration ("
+                "id INTEGER PRIMARY KEY CHECK (id = 0),"
+                "version INTEGER"
+            ")")
+            db.session.execute("INSERT INTO migration (id, version) VALUES (0, 0)")
         db.session.commit()
 
 def get_migration_version():
