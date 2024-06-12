@@ -7,7 +7,7 @@ name="${0##*/}"
 
 setup() {
   virtualenv venv
-  ./venv/bin/pip -r requirments.txt
+  ./venv/bin/pip install -r requirements.txt
 }
 
 run() {
