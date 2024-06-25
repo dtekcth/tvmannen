@@ -27,6 +27,9 @@ with app.app_context():
         print("Data base does not exist, creating a new one")
         create_db()
 
+import migrate
+migrate.do_migrations()
+
 from users import users_page
 app.register_blueprint(users_page)
 

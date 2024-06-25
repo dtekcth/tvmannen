@@ -5,9 +5,9 @@ from datetime import datetime, timedelta
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
-    role = db.Column(db.String(32))
+    username = db.Column(db.String(), index=True, unique=True)
+    password_hash = db.Column(db.String())
+    role = db.Column(db.String())
 
     def set_password(self, password):
       self.password_hash = generate_password_hash(password)
@@ -18,14 +18,13 @@ class User(UserMixin, db.Model):
 
 class PR(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    desc = db.Column(db.String(128))
-    file_name = db.Column(db.String(128))
+    desc = db.Column(db.String())
+    file_name = db.Column(db.String())
     start_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     end_date = db.Column(db.DateTime, index=True)
-    owner = db.Column(db.String(64))
+    owner = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     priority = db.Column(db.Integer, default=0)
-
   
 def fix_date(start_date, end_date, priority):
 
