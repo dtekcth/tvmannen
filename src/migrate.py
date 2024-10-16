@@ -1,31 +1,32 @@
 from tv import app, db
+from sqlalchemy import text
 import os
 import re
 import importlib
 
 def ensure_migration_table():
     with app.app_context():
-        table = db.session.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='migration'")
+        table = db.session.execute(text("SELECT name FROM sqlite_master WHERE type='table' AND name='migration'"))
         if len(table.fetchall()) != 1:
             print("Creating migration table")
-            db.session.execute("CREATE TABLE IF NOT EXISTS migration ("
+            db.session.execute(text("CREATE TABLE IF NOT EXISTS migration ("
                 "id INTEGER PRIMARY KEY CHECK (id = 0),"
                 "version INTEGER"
-            ")")
-            db.session.execute("INSERT INTO migration (id, version) VALUES (0, 0)")
+            ")"))
+            db.session.execute(text("INSERT INTO migration (id, version) VALUES (0, 0)"))
         db.session.commit()
 
 def get_migration_version():
     ensure_migration_table()
     with app.app_context():
-        version = db.session.execute("SELECT version FROM migration").fetchall()[0][0];
+        version = db.session.execute(text("SELECT version FROM migration")).fetchall()[0][0]
         db.session.commit()
         return version
 
 def set_migration_version(version):
     ensure_migration_table()
     with app.app_context():
-        db.session.execute(f"UPDATE MIGRATION SET version = :version", { 'version': version });
+        db.session.execute(text(f"UPDATE MIGRATION SET version = {version}"))
         db.session.commit()
 
 def do_migrations():
