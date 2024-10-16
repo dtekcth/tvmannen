@@ -3,7 +3,7 @@ import os
 import re
 import importlib
 
-def ensure_migration_table(commit=True):
+def ensure_migration_table():
     with app.app_context():
         table = db.session.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='migration'")
         if len(table.fetchall()) != 1:
@@ -13,18 +13,17 @@ def ensure_migration_table(commit=True):
                 "version INTEGER"
             ")")
             db.session.execute("INSERT INTO migration (id, version) VALUES (0, 0)")
-        if commit:
-            db.session.commit()
+        db.session.commit()
 
 def get_migration_version():
-    ensure_migration_table(commit=False)
+    ensure_migration_table()
     with app.app_context():
         version = db.session.execute("SELECT version FROM migration").fetchall()[0][0];
         db.session.commit()
         return version
 
 def set_migration_version(version):
-    ensure_migration_table(commit=False)
+    ensure_migration_table()
     with app.app_context():
         db.session.execute(f"UPDATE MIGRATION SET version = :version", { 'version': version });
         db.session.commit()
