@@ -76,7 +76,18 @@
       {% endfor %}
     </div>
   </div>
-    
+
+  <div class="center-row row responsive-label">
+    <div class="col-sm-12 col-md-2">
+      {{ form.link.label }}
+    </div>
+    <div class="col-sm-12 col-md">
+      {{ form.link }}
+      {% for error in form.link.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </div>
+  </div>
 
   <div class="center-row row responsive-label">
     <div class="col-sm-12 col-md-2">

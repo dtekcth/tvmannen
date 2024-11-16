@@ -35,8 +35,10 @@ class RegistrationForm(FlaskForm):
           raise ValidationError('Username already taken')
 
 class PRForm(FlaskForm):
-  file = FileField(label="File:", 
-    validators=[DataRequired()])
+  file = FileField(label="File:")
+
+  link = StringField(label="Link:",
+    render_kw={"placeholder": "https://google.com"})
 
   desc = StringField("Description:",
     validators=[DataRequired(), Length(min=1, max=128)],

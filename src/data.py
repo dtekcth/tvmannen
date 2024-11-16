@@ -19,6 +19,7 @@ class User(UserMixin, db.Model):
 class PR(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     desc = db.Column(db.String())
+    is_iframe = db.Column(db.Boolean())
     file_name = db.Column(db.String())
     start_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     end_date = db.Column(db.DateTime, index=True)
@@ -53,10 +54,10 @@ def fix_date(start_date, end_date, priority):
 
   return start, end
 
-def add_pr(file_name, desc, priority, start_date, end_date, user_id, owner):
+def add_pr(file_name, is_iframe, desc, priority, start_date, end_date, user_id, owner):
   # Fix date
   start, end = fix_date(start_date, end_date, priority)
-  pr = PR(desc=desc, file_name=file_name, priority=priority,
+  pr = PR(desc=desc, is_iframe=is_iframe, file_name=file_name, priority=priority,
           start_date=start, end_date=end, user_id=user_id, owner=owner)
   db.session.add(pr)
   db.session.commit()

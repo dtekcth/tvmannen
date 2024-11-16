@@ -58,12 +58,15 @@ def pr():
     priority = PR.query.filter(PR.priority==1, PR.start_date < datetime.now()).first() 
     if priority != None:
         return json.jsonify(
-            ["/img/" + priority.file_name]
+            { "iframe": priority.is_iframe,
+              "link": priority.file_name if priority.is_iframe else "/img/" + priority.file_name}
         )
 
     # Return all active PRs
     return json.jsonify(
-        [("/img/" + user.file_name) 
+        [{"iframe": user.is_iframe,
+          "link": user.file_name if user.is_iframe else "/img/" + user.file_name
+         }
             for user in PR.query.filter(PR.start_date < datetime.now()).all()]
         )
 
