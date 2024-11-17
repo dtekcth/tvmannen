@@ -71,6 +71,9 @@
     </div>
     <div class="col-sm-12 col-md">
       {{ form.file }}
+      <button type="button" id="clearFile" style="all: revert">
+        clear
+      </button>
       {% for error in form.file.errors %}
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
@@ -142,4 +145,24 @@
 </form>
 </fieldset>
 
+<script>
+  const file = document.getElementById("file"),
+        link = document.getElementById("link"),
+        clear = document.getElementById("clearFile");
+  file.addEventListener("change", (event) => {
+      link.disabled = file.value!=='';
+    }
+  )
+
+  link.addEventListener("input", (event) => {
+      file.disabled = link.value!=='';
+    }
+  )
+
+  clear.addEventListener("click", (event) => {
+      file.value = '';
+      link.disabled = false;
+    }
+  )
+</script>
 {% endblock %}
