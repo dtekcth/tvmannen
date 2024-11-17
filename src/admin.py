@@ -41,22 +41,10 @@ def admin():
 
     if form.validate_on_submit():
         filename = form.file.data.filename
-        link = quote(form.link.data, safe='/:?&')
-
-        if not link and (not filename or not allowed_file(filename)):
-            flash("File type not supported")
-            return redirect("/admin")
+        link = form.link.data
 
         if link and filename:
             flash("Both file and link")
-            return redirect("/admin")
-
-        if not link.startswith("https://"):
-            flash("Link didn't start with https://")
-            return redirect("/admin")
-
-        if link.startswith("https://tv.dtek.se"):
-            flash("No links to tv-mannnen D:")
             return redirect("/admin")
 
         # Check if start date is after end date
@@ -72,9 +60,15 @@ def admin():
                 flash(msg)
                 return redirect("/admin")
 
-        org_filename = secure_filename(filename)
-
         if link:
+            if not link.startswith("https://"):
+                flash("Link didn't start with https://")
+                return redirect("/admin")
+
+            if link.startswith("https://tv.dtek.se"):
+                flash("No links to tv-mannnen D:")
+                return redirect("/admin")
+
             add_pr(file_name=link,
                 is_iframe=True,
                 desc=form.desc.data,
@@ -84,6 +78,12 @@ def admin():
                 user_id=current_user.id,
                 owner=current_user.username)
         elif filename:
+            if (not filename or not allowed_file(filename)):
+                flash("File type not supported")
+                return redirect("/admin")
+
+            org_filename = secure_filename(filename)
+
             # Generate random filename with correct extention
             filename = str(uuid.uuid4()) + "." + \
                 org_filename.rsplit('.', 1)[1].lower()
@@ -133,7 +133,8 @@ def delete():
         return redirect("/admin")
 
     try:
-        os.remove(os.path.join(config.UPLOAD_FOLDER, pr.file_name))
+        if not pr.is_iframe:
+            os.remove(os.path.join(config.UPLOAD_FOLDER, pr.file_name))
     except: 
         flash("PR wasn't found on disk but the database entry has been removed")
         
