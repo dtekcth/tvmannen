@@ -74,7 +74,7 @@
       if (prs[curr].iframe) {
         body.innerHTML = ""
         var iframe = document.createElement('iframe');
-        iframe.src = encodeURI(prs[curr].link);
+        iframe.src = prs[curr].link;
         iframe.width = "100%";
         iframe.height = "100%";
         iframe.style.background = 'white';
