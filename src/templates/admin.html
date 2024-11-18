@@ -26,7 +26,7 @@
 </tr>
 {% for pr in pr_list %}
   <tr>
-    <td data-label="Description:">  <a href="/img/{{pr.file_name}}">{{ pr.desc }}</a></td>
+    <td data-label="Description:">  <a href={{ pr.file_name if pr.is_iframe else "/img/" + pr.file_name}}>{{ pr.desc }}</a></td>
     <td data-label="Start time:">   {{ pr.start_date.strftime('%Y-%m-%d, %H:%M') }}</td>
     <td data-label="End time:">     {{ pr.end_date.strftime('%Y-%m-%d, %H:%M') }}</td>
     <td data-label="Priority:">     {{ pr.priority }}</td>
@@ -71,12 +71,26 @@
     </div>
     <div class="col-sm-12 col-md">
       {{ form.file }}
+      <button type="button" id="clearFile" style="all: revert">
+        clear
+      </button>
       {% for error in form.file.errors %}
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
     </div>
   </div>
-    
+
+  <div class="center-row row responsive-label">
+    <div class="col-sm-12 col-md-2">
+      {{ form.link.label }}
+    </div>
+    <div class="col-sm-12 col-md">
+      {{ form.link }}
+      {% for error in form.link.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </div>
+  </div>
 
   <div class="center-row row responsive-label">
     <div class="col-sm-12 col-md-2">
@@ -131,4 +145,24 @@
 </form>
 </fieldset>
 
+<script>
+  const file = document.getElementById("file"),
+        link = document.getElementById("link"),
+        clear = document.getElementById("clearFile");
+  file.addEventListener("change", (event) => {
+      link.disabled = file.value!=='';
+    }
+  )
+
+  link.addEventListener("input", (event) => {
+      file.disabled = link.value!=='';
+    }
+  )
+
+  clear.addEventListener("click", (event) => {
+      file.value = '';
+      link.disabled = false;
+    }
+  )
+</script>
 {% endblock %}

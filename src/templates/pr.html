@@ -36,6 +36,15 @@
       width: 100%;
       height: 100%;
     }
+
+    iframe {
+      display: block;
+      width: 100%;
+      border: none;
+      overflow-y: auto;
+      overflow-x: hidden;
+      pointer-events: none;
+    }
   </style>
 
   <script>
@@ -62,13 +71,24 @@
       // If a pr has been deleted since last call
       curr %= prs.length;
 
-      if (prs[curr].endsWith(".mp4")) {
+      if (prs[curr].iframe) {
+        body.innerHTML = ""
+        var iframe = document.createElement('iframe');
+        iframe.src = encodeURI(prs[curr].link);
+        iframe.width = "100%";
+        iframe.height = "100%";
+        iframe.style.background = 'white';
+        body.appendChild(iframe)
+        body.style.backgroundImage = "none";
+        var time_to_play = {{ pr_time }} * 1000;
+        timeout = setTimeout(next_pr, time_to_play);
+      } else if (prs[curr].link.endsWith(".mp4")) {
         // Video (only mp4)
         var video = document.createElement('video');
         video.autoplay = true;
         video.loop = true;
         video.muted = true;
-        video.src = prs[curr];
+        video.src = prs[curr].link;
         video.onloadedmetadata = () => {
           var times_to_repeat = Math.ceil({{ pr_time }} / video.duration);
           var time_to_play = Math.floor(times_to_repeat * video.duration * 1000);
@@ -82,7 +102,7 @@
       else {
         // Image
         body.innerHTML = "";
-        body.style.backgroundImage = "url(" + prs[curr] + ")";
+        body.style.backgroundImage = "url(" + prs[curr].link + ")";
         var time_to_play = {{ pr_time }} * 1000;
         timeout = setTimeout(next_pr, time_to_play);
       }
