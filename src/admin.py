@@ -40,7 +40,7 @@ def admin():
     form = PRForm()
 
     if form.validate_on_submit():
-        filename = form.file.data.filename
+        filename = form.file.data
         link = form.link.data
 
         if link and filename:
@@ -78,6 +78,7 @@ def admin():
                 user_id=current_user.id,
                 owner=current_user.username)
         elif filename:
+            filename = filename.filename
             if (not filename or not allowed_file(filename)):
                 flash("File type not supported")
                 return redirect("/admin")
