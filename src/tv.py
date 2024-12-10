@@ -55,19 +55,20 @@ def pr():
     pr_cleanup()
 
     # Check if priority PR exists
-    priority = PR.query.filter(PR.priority==1, PR.start_date < datetime.now()).first() 
-    if priority != None:
+    priority = PR.query.filter(PR.priority==1, PR.start_date < datetime.now()).all()
+    if priority != []:
         return json.jsonify(
-            { "iframe": priority.is_iframe,
-              "link": priority.file_name if priority.is_iframe else "/img/" + priority.file_name}
+            [{ "iframe": pr.is_iframe,
+              "link": pr.file_name if pr.is_iframe else "/img/" + pr.file_name}
+             for pr in priority]
         )
 
     # Return all active PRs
     return json.jsonify(
-        [{"iframe": user.is_iframe,
-          "link": user.file_name if user.is_iframe else "/img/" + user.file_name
+        [{"iframe": pr.is_iframe,
+          "link": pr.file_name if pr.is_iframe else "/img/" + pr.file_name
          }
-            for user in PR.query.filter(PR.start_date < datetime.now()).all()]
+            for pr in PR.query.filter(PR.start_date < datetime.now()).all()]
         )
 
 @app.route('/img/<path:path>')
