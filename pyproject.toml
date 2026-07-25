@@ -1,7 +1,7 @@
 [project]
 name = "tvmannen"
 version = "2.2.5"
-requires-python = "~=3.11.0"
+requires-python = "~=3.14.6"
 dependencies = [
     "click==8.4.2",
     "Flask==3.1.3",
