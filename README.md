@@ -29,7 +29,10 @@ The database tracks its current migration version and runs all new migrations on
 
 ## Running locally
 
-In order to aid running locally there is a shell script `dev.sh`, running `./dev.sh setup` sets up a python virtualenv with all the dependencies, running `./dev.sh run` will run the application on port `8080`, running `./dev.sh shell` will run bash with the virtual env tools in path.
+1. [Install `uv`](https://docs.astral.sh/uv/getting-started/installation/)
+1. `SECRET_KEY=<secret key> uv run uwsgi --enable-threads --http-socket :"${PORT:-8080}" --module tv:app`
+
+To enter the environment, run `source .venv/bin/activate`.
 
 ## Running in Docker
 
