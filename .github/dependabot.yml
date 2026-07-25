@@ -20,3 +20,11 @@ updates:
       interval: "cron"
       # 09:00 every day
       cronjob: "0 9 * * *"
+    groups:
+      # Use single PR
+      dependencies:
+        patterns:
+          - "*"
+    allow:
+      # Direct and indirect dependencies
+      - dependency-type: "all"
