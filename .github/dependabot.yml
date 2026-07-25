@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "cron"
+      # Every 5 minutes
+      cronjob: "*/5 * * * *"
+    groups:
+      # Use single PR
+      dependencies:
+        patterns:
+          - "*"
