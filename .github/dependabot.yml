@@ -14,3 +14,9 @@ updates:
     allow:
       # Direct and indirect dependencies
       - dependency-type: "all"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "cron"
+      # 09:00 every day
+      cronjob: "0 9 * * *"
