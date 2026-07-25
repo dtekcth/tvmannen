@@ -11,3 +11,6 @@ updates:
       dependencies:
         patterns:
           - "*"
+    allow:
+      # Direct and indirect dependencies
+      - dependency-type: "all"
