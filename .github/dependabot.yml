@@ -8,7 +8,7 @@ updates:
       cronjob: "0 9 * * *"
     groups:
       # Use single PR
-      dependencies:
+      uv:
         patterns:
           - "*"
     allow:
@@ -22,7 +22,7 @@ updates:
       cronjob: "0 9 * * *"
     groups:
       # Use single PR
-      dependencies:
+      github-actions:
         patterns:
           - "*"
     allow:
