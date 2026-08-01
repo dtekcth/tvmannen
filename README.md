@@ -30,11 +30,15 @@ The database tracks its current migration version and runs all new migrations on
 ## Running locally
 
 1. [Install `uv`](https://docs.astral.sh/uv/getting-started/installation/)
+1. `cd src/`
 1. `SECRET_KEY=<secret key> uv run uwsgi --enable-threads --http-socket :"${PORT:-8080}" --module tv:app`
 
 To enter the environment, run `source .venv/bin/activate`.
 
 ## Running in Docker
+
+1. Create `.env` in repo root with `SECRET_KEY=<some key>`
+1. `docker compose up -d --build`
 
 The provided sample compose file should work out of the box provided a
 `SECRET_KEY` env-variable. Additional variables can be found in `src/config.py`.
