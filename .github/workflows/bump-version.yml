@@ -22,8 +22,7 @@ jobs:
         id: new_version
         run: uv version --short
 
-      - name: Run bump-version.yml
-        uses: dtekcth/workflows/.github/workflows/bump-version.yml
+      - uses: dtekcth/workflows/.github/workflows/bump-version.yml
         permissions:
           contents: write
           packages: write
