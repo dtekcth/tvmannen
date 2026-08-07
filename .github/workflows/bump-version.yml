@@ -39,14 +39,3 @@ jobs:
           git tag "v${{ steps.new_version.outputs.value }}"
           git push origin main
           git push origin "v${{ steps.new_version.outputs.value }}"
-
-
-  bump-remote:
-    needs: bump-local
-    uses: dtekcth/workflows/.github/workflows/bump-version.yml@main
-    permissions:
-      contents: write
-      packages: write
-    with:
-      update_type: none
-      new_version: "${{ needs.bump-local.outputs.new_version }}"
