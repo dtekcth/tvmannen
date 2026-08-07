@@ -22,7 +22,7 @@ jobs:
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
 
       - name: Bump version locally
-        run: "uv version --bump ${{ inputs.update_type }}"
+        run: "uv version --no-sync --bump ${{ inputs.update_type }}"
 
       - name: Get new version
         id: new_version
