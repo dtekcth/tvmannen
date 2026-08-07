@@ -14,13 +14,14 @@ on:
 
 jobs:
   bump-local:
+    runs-on: ubuntu-latest
     steps:
       - name: Bump version locally
         run: "uv version --bump ${{ inputs.update_type }}"
 
       - name: Get new version
         id: new_version
-        run: 'uv version --short >> "$GITHUB_OUTPUT"'
+        run: echo "value=$(uv version --short)" >> "$GITHUB_OUTPUT"
 
   bump-remote:
     needs: bump-local
@@ -30,4 +31,4 @@ jobs:
       packages: write
     with:
       update_type: none
-      new_version: "${{ steps.new_version.outputs.value }}"
+      new_version: "${{ needs.bump-local.outputs.new_version }}"
