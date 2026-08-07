@@ -4,14 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       update_type:
-        type:
-          required: true
-          default: "patch"
-          type: choice
-          options:
-            - patch
-            - minor
-            - major
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 jobs:
   bump-local:
