@@ -42,6 +42,7 @@ jobs:
 
   build-and-push-image:
     uses: dtekcth/workflows/.github/workflows/docker-publish.yml@f045e0ae7cc9a754845c5738049965d7bd3b9126 # v1.2.0
+    needs: bump-version
     permissions:
       contents: read
       packages: write
