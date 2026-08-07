@@ -15,6 +15,8 @@ on:
 jobs:
   bump-local:
     runs-on: ubuntu-latest
+    outputs:
+        new_version: ${{ steps.new_version.outputs.value }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -26,7 +28,7 @@ jobs:
 
       - name: Get new version
         id: new_version
-        run: echo "value=$(uv version --short)" >> "$GITHUB_OUTPUT"
+        run: echo "new_version=$(uv version --short)" >> "$GITHUB_OUTPUT"
 
   bump-remote:
     needs: bump-local
