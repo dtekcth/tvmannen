@@ -1,0 +1,32 @@
+name: Bump version
+
+on:
+  workflow_dispatch:
+    update_type:
+      type:
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  bump-version:
+    steps:
+      - name: Bump version locally
+        run: "uv version --bump ${{ inputs.update_type }}"
+
+      - name: Get new version
+        id: new_version
+        run: uv version --short
+
+      - name: Run bump-version.yml
+        uses: dtekcth/workflows/.github/workflows/bump-version.yml
+        permissions:
+          contents: write
+          packages: write
+        with:
+          update_type: none
+          new_version: "${{ steps.new_version.outputs.value }}"
