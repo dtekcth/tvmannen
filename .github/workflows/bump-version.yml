@@ -25,7 +25,7 @@ jobs:
 
   bump-remote:
     needs: bump-local
-    uses: dtekcth/workflows/.github/workflows/bump-version.yml
+    uses: dtekcth/workflows/.github/workflows/bump-version.yml@main
     permissions:
       contents: write
       packages: write
