@@ -2,15 +2,16 @@ name: Bump version
 
 on:
   workflow_dispatch:
-    update_type:
-      type:
-        required: true
-        default: "patch"
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
+    inputs:
+      update_type:
+        type:
+          required: true
+          default: "patch"
+          type: choice
+          options:
+            - patch
+            - minor
+            - major
 
 jobs:
   bump-local:
