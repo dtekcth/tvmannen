@@ -36,8 +36,10 @@ jobs:
           new_version: ${{ steps.new_version.outputs.value }}
 
   build-and-push-image:
-    uses: dtekcth/workflows/.github/workflows/docker-publish.yml@f045e0ae7cc9a754845c5738049965d7bd3b9126 # v1.2.0
+    uses: dtekcth/workflows/.github/workflows/docker-publish.yml@main
     needs: bump-version
     permissions:
       contents: read
       packages: write
+    with:
+      tag: ${{ needs.bump-version.outputs.new_version }}
