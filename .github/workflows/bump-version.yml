@@ -42,4 +42,4 @@ jobs:
       contents: read
       packages: write
     with:
-      tag: v${{ needs.bump-version.outputs.new_version }}
+      tag: ghcr.io/dtekcth/tvmannen:v${{ needs.bump-version.outputs.new_version }}
