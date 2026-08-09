@@ -42,4 +42,4 @@ jobs:
       contents: read
       packages: write
     with:
-      tag: ${{ needs.bump-version.outputs.new_version }}
+      tag: v${{ needs.bump-version.outputs.new_version }}
