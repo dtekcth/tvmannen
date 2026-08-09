@@ -196,7 +196,7 @@ wheels = [
 
 [[package]]
 name = "tvmannen"
-version = "2.2.19"
+version = "2.2.20"
 source = { virtual = "." }
 dependencies = [
     { name = "click" },
