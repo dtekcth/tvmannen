@@ -31,18 +31,11 @@ jobs:
         run: echo "value=$(uv version --short)" >> "$GITHUB_OUTPUT"
 
       - name: Create release
-        run: |
-          git config user.name webredax
-          git config user.email 309066399+webredax@users.noreply.github.com
-          git add .
-          git commit --allow-empty -m "Bump version to ${{ steps.new_version.outputs.value }}"
-          git tag "v${{ steps.new_version.outputs.value }}"
-          git push origin main
-          git push origin "v${{ steps.new_version.outputs.value }}"
+        uses: dtekcth/workflows/.github/actions/create-release.yml@main
 
-  build-and-push-image:
-    uses: dtekcth/workflows/.github/workflows/docker-publish.yml@f045e0ae7cc9a754845c5738049965d7bd3b9126 # v1.2.0
-    needs: bump-version
-    permissions:
-      contents: read
-      packages: write
+  # build-and-push-image:
+  #   uses: dtekcth/workflows/.github/workflows/docker-publish.yml@f045e0ae7cc9a754845c5738049965d7bd3b9126 # v1.2.0
+  #   needs: bump-version
+  #   permissions:
+  #     contents: read
+  #     packages: write
