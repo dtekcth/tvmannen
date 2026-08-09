@@ -31,7 +31,7 @@ jobs:
         run: echo "value=$(uv version --short)" >> "$GITHUB_OUTPUT"
 
       - name: Create release
-        uses: dtekcth/workflows/.github/actions/create-release@main
+        uses: dtekcth/workflows/.github/actions/create-release@f083b5a9bb13c9f38ef0fb464d54730da077af47 # main
         with:
           new_version: ${{ steps.new_version.outputs.value }}
 
