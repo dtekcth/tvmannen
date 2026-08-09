@@ -31,7 +31,9 @@ jobs:
         run: echo "value=$(uv version --short)" >> "$GITHUB_OUTPUT"
 
       - name: Create release
-        uses: dtekcth/workflows/.github/actions/create-release.yml@main
+        uses: dtekcth/workflows/.github/actions/create-release@main
+        with:
+          new_version: ${{ steps.new_version.outputs.value }}
 
   # build-and-push-image:
   #   uses: dtekcth/workflows/.github/workflows/docker-publish.yml@f045e0ae7cc9a754845c5738049965d7bd3b9126 # v1.2.0
