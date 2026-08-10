@@ -1,4 +1,4 @@
-name: Bump and deploy
+name: Create release and deploy
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ on:
           - major
 
 jobs:
-  bump-version:
+  create-release:
     runs-on: ubuntu-latest
     outputs:
         new_version: ${{ steps.new_version.outputs.value }}
@@ -35,11 +35,11 @@ jobs:
         with:
           new_version: ${{ steps.new_version.outputs.value }}
 
-  build-and-push-image:
+  docker-publish:
     uses: dtekcth/workflows/.github/workflows/docker-publish.yml@main
-    needs: bump-version
+    needs: create-release
     permissions:
       contents: read
       packages: write
     with:
-      tag: ghcr.io/dtekcth/tvmannen:v${{ needs.bump-version.outputs.new_version }}
+      tag: ghcr.io/dtekcth/tvmannen:v${{ needs.create-release.outputs.new_version }}
