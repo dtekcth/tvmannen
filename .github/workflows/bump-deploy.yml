@@ -1,4 +1,4 @@
-name: Bump version
+name: Bump and deploy
 
 on:
   workflow_dispatch:
