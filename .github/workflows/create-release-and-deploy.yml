@@ -31,12 +31,14 @@ jobs:
         run: echo "value=$(uv version --short)" >> "$GITHUB_OUTPUT"
 
       - name: Create release
-        uses: dtekcth/workflows/.github/actions/create-release@main
+        uses: dtekcth/workflows/.github/actions/create-release@v1.3.5
         with:
           new_version: ${{ steps.new_version.outputs.value }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   docker-publish:
-    uses: dtekcth/workflows/.github/workflows/docker-publish.yml@main
+    uses: dtekcth/workflows/.github/workflows/docker-publish.yml@v1.3.5
     needs: create-release
     permissions:
       contents: read
