@@ -12,7 +12,7 @@ dependencies = [
     "itsdangerous==2.2.0",
     "Jinja2==3.1.6",
     "MarkupSafe==3.0.3",
-    "SQLAlchemy==2.0.51",
+    "SQLAlchemy==2.0.52",
     "uWSGI==2.0.31",
     "Werkzeug==3.1.8",
     "WTForms==3.2.2",
