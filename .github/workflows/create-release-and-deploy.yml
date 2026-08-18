@@ -13,35 +13,10 @@ on:
           - major
 
 jobs:
-  create-release:
-    runs-on: ubuntu-latest
-    outputs:
-        new_version: ${{ steps.new_version.outputs.value }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
-
-      - name: Bump version locally
-        run: "uv version --no-sync --bump ${{ inputs.update_type }}"
-
-      - name: Get new version
-        id: new_version
-        run: echo "value=$(uv version --short)" >> "$GITHUB_OUTPUT"
-
-      - name: Create release
-        uses: dtekcth/workflows/.github/actions/create-release@c30a8ecf6ebd1d4194869cb98458abfe1cd5e702 # v1.3.6
-        with:
-          new_version: ${{ steps.new_version.outputs.value }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  docker-publish:
-    uses: dtekcth/workflows/.github/workflows/docker-publish.yml@c30a8ecf6ebd1d4194869cb98458abfe1cd5e702 # v1.3.6
-    needs: create-release
+  create-release-and-deploy:
+    uses: dtekcth/workflows/.github/workflows/create-release-and-deploy.yml@main
     permissions:
-      contents: read
+      contents: write
       packages: write
     with:
-      tag: v${{ needs.create-release.outputs.new_version }}
+        update_type: ${{ inputs.update_type }}
