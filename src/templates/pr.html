@@ -111,8 +111,7 @@
       curr %= prs.length;
 
       // Sleep until next pr
-      let percent_left = (Date.now() / 1000 / PR_TIME) % 1;
-      let milliseconds_left = 1000*PR_TIME*(1-percent_left);
+      let milliseconds_left = (pr_num_since_unix+1) * PR_TIME*1000-Date.now();
       timeout = setTimeout(next_pr, milliseconds_left);
     }
 
