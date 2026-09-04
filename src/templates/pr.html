@@ -49,13 +49,13 @@
 
   <script>
 
-    var curr = 0;
-    var prs = undefined;
-    var timeout = undefined;
+    let curr = 0;
+    let prs = undefined;
+    let timeout = undefined;
     const PR_TIME = {{ pr_time }};
     const PR_FETCH_TIME = {{ pr_fetch_time }};
 
-    var image_offset = 0;
+    let image_offset = 0;
 
     function add_image_offset() {
       image_offset +=1;
@@ -82,7 +82,7 @@
       if (prs[curr].iframe) {
         // Iframe
         body.innerHTML = ""
-        var iframe = document.createElement('iframe');
+        let iframe = document.createElement('iframe');
         iframe.src = encodeURI(prs[curr].link);
         iframe.width = "100%";
         iframe.height = "100%";
@@ -91,7 +91,7 @@
         body.style.backgroundImage = "none";
       } else if (prs[curr].link.endsWith(".mp4")) {
         // Video (only mp4)
-        var video = document.createElement('video');
+        let video = document.createElement('video');
         video.autoplay = true;
         video.loop = true;
         video.muted = true;
@@ -118,13 +118,13 @@
 
     // Get list of PRs from /pr
     function get_prs() {
-      var request = new XMLHttpRequest();
+      let request = new XMLHttpRequest();
       request.open("GET", "/pr");
       request.responseType = 'json';
       request.send();
 
       request.onload = function () {
-        var prev_prs = prs;
+        let prev_prs = prs;
         prs = request.response;
 
         // Call next_pr on first load
