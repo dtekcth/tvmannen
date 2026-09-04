@@ -49,9 +49,17 @@
 
   <script>
 
-    var curr = 0;
-    var prs = undefined;
-    var timeout = undefined;
+    let curr = 0;
+    let prs = undefined;
+    let timeout = undefined;
+    const PR_TIME = {{ pr_time }};
+    const PR_FETCH_TIME = {{ pr_fetch_time }};
+
+    let image_offset = 0;
+
+    function add_image_offset() {
+      image_offset +=1;
+    }
 
     function next_pr() {
       body = document.getElementById("body");
@@ -63,37 +71,31 @@
       // No PR -> show dtek logo
       if (prs == undefined || prs.length < 1) {
         body.style.backgroundImage = "url(https://dtek.se/static/datalogo.svg)";
-        var time_to_play = {{ pr_time }} * 1000;
-        timeout = setTimeout(next_pr, time_to_play);
         return;
       }
 
-      // If a pr has been deleted since last call
-      curr %= prs.length;
+      // Base which PR to use on time passed since unix epoch.
+      // Can be overridden by advancing to next PR manually.
+      pr_num_since_unix = Math.floor((Date.now() / 1000 / PR_TIME))
+      curr = (pr_num_since_unix + image_offset) % prs.length;
 
       if (prs[curr].iframe) {
+        // Iframe
         body.innerHTML = ""
-        var iframe = document.createElement('iframe');
+        let iframe = document.createElement('iframe');
         iframe.src = encodeURI(prs[curr].link);
         iframe.width = "100%";
         iframe.height = "100%";
         iframe.style.background = 'white';
         body.appendChild(iframe)
         body.style.backgroundImage = "none";
-        var time_to_play = {{ pr_time }} * 1000;
-        timeout = setTimeout(next_pr, time_to_play);
       } else if (prs[curr].link.endsWith(".mp4")) {
         // Video (only mp4)
-        var video = document.createElement('video');
+        let video = document.createElement('video');
         video.autoplay = true;
         video.loop = true;
         video.muted = true;
         video.src = prs[curr].link;
-        video.onloadedmetadata = () => {
-          var times_to_repeat = Math.ceil({{ pr_time }} / video.duration);
-          var time_to_play = Math.floor(times_to_repeat * video.duration * 1000);
-          timeout = setTimeout(next_pr, time_to_play);
-        };
 
         body.innerHTML = "";
         body.style.backgroundImage = "none";
@@ -103,23 +105,25 @@
         // Image
         body.innerHTML = "";
         body.style.backgroundImage = "url(" + prs[curr].link + ")";
-        var time_to_play = {{ pr_time }} * 1000;
-        timeout = setTimeout(next_pr, time_to_play);
       }
 
       curr++;
       curr %= prs.length;
+
+      // Sleep until next pr
+      let milliseconds_left = (pr_num_since_unix+1) * PR_TIME*1000-Date.now();
+      timeout = setTimeout(next_pr, milliseconds_left);
     }
 
     // Get list of PRs from /pr
     function get_prs() {
-      var request = new XMLHttpRequest();
+      let request = new XMLHttpRequest();
       request.open("GET", "/pr");
       request.responseType = 'json';
       request.send();
 
       request.onload = function () {
-        var prev_prs = prs;
+        let prev_prs = prs;
         prs = request.response;
 
         // Call next_pr on first load
@@ -128,20 +132,22 @@
         }
       }
     }
-    
+
     // Naively switch to next PR when pressing spacebar
     document.onkeypress = function (e) {
       if (e.keyCode === 32) {
-        next_pr()
+        add_image_offset();
+        next_pr();
       }
     };
     // Naively switch to next PR when touching the screen
     document.ontouchend = function (e) {
-      next_pr()
+        add_image_offset();
+        next_pr();
     };
 
     // How often the PR list is updated
-    setInterval(get_prs, {{ pr_fetch_time }} * 1000)
+    setInterval(get_prs, PR_FETCH_TIME * 1000)
   </script>
 </head>
 
