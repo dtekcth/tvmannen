@@ -52,6 +52,8 @@
     var curr = 0;
     var prs = undefined;
     var timeout = undefined;
+    const PR_TIME = {{ pr_time }};
+    const PR_FETCH_TIME = {{ pr_fetch_time }};
 
     function next_pr() {
       body = document.getElementById("body");
@@ -63,7 +65,7 @@
       // No PR -> show dtek logo
       if (prs == undefined || prs.length < 1) {
         body.style.backgroundImage = "url(https://dtek.se/static/datalogo.svg)";
-        var time_to_play = {{ pr_time }} * 1000;
+        var time_to_play = PR_TIME * 1000;
         timeout = setTimeout(next_pr, time_to_play);
         return;
       }
@@ -80,7 +82,7 @@
         iframe.style.background = 'white';
         body.appendChild(iframe)
         body.style.backgroundImage = "none";
-        var time_to_play = {{ pr_time }} * 1000;
+        var time_to_play = PR_TIME * 1000;
         timeout = setTimeout(next_pr, time_to_play);
       } else if (prs[curr].link.endsWith(".mp4")) {
         // Video (only mp4)
@@ -90,7 +92,7 @@
         video.muted = true;
         video.src = prs[curr].link;
         video.onloadedmetadata = () => {
-          var times_to_repeat = Math.ceil({{ pr_time }} / video.duration);
+          var times_to_repeat = Math.ceil(PR_TIME / video.duration);
           var time_to_play = Math.floor(times_to_repeat * video.duration * 1000);
           timeout = setTimeout(next_pr, time_to_play);
         };
@@ -103,7 +105,7 @@
         // Image
         body.innerHTML = "";
         body.style.backgroundImage = "url(" + prs[curr].link + ")";
-        var time_to_play = {{ pr_time }} * 1000;
+        var time_to_play = PR_TIME * 1000;
         timeout = setTimeout(next_pr, time_to_play);
       }
 
@@ -128,7 +130,7 @@
         }
       }
     }
-    
+
     // Naively switch to next PR when pressing spacebar
     document.onkeypress = function (e) {
       if (e.keyCode === 32) {
@@ -141,7 +143,7 @@
     };
 
     // How often the PR list is updated
-    setInterval(get_prs, {{ pr_fetch_time }} * 1000)
+    setInterval(get_prs, PR_FETCH_TIME * 1000)
   </script>
 </head>
 
