@@ -1,7 +1,6 @@
 <!-- Page for displaying PRs -->
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>TV-Mannen</title>
   <meta charset="utf-8">
@@ -46,113 +45,96 @@
       pointer-events: none;
     }
   </style>
-
   <script>
-
-    let curr = 0;
-    let prs = undefined;
-    let timeout = undefined;
     const PR_TIME = {{ pr_time }};
     const PR_FETCH_TIME = {{ pr_fetch_time }};
-
+    let prs = undefined;
+    let timeout = undefined;
     let image_offset = 0;
 
-    function add_image_offset() {
-      image_offset +=1;
-    }
-
     function next_pr() {
-      body = document.getElementById("body");
-
-      if (timeout != undefined) {
+      if (timeout) {
         clearTimeout(timeout);
       }
 
+      const body = document.body;
+
       // No PR -> show dtek logo
-      if (prs == undefined || prs.length < 1) {
+      if (!prs || prs.length < 1) {
         body.style.backgroundImage = "url(https://dtek.se/static/datalogo.svg)";
+        body.replaceChildren();
         return;
       }
 
       // Base which PR to use on time passed since unix epoch.
       // Can be overridden by advancing to next PR manually.
-      pr_num_since_unix = Math.floor((Date.now() / 1000 / PR_TIME))
-      curr = (pr_num_since_unix + image_offset) % prs.length;
+      const pr_num_since_unix = Math.floor(Date.now() / 1000 / PR_TIME);
+      const pr_index = (pr_num_since_unix + image_offset) % prs.length;
+      const pr = prs[pr_index];
 
-      if (prs[curr].iframe) {
+      if (pr.iframe) {
         // Iframe
-        body.innerHTML = ""
-        let iframe = document.createElement('iframe');
-        iframe.src = encodeURI(prs[curr].link);
+        const iframe = document.createElement('iframe');
+        iframe.src = encodeURI(pr.link);
         iframe.width = "100%";
         iframe.height = "100%";
         iframe.style.background = 'white';
-        body.appendChild(iframe)
+
         body.style.backgroundImage = "none";
-      } else if (prs[curr].link.endsWith(".mp4")) {
+        body.replaceChildren(iframe)
+      } else if (pr.link.endsWith(".mp4")) {
         // Video (only mp4)
-        let video = document.createElement('video');
+        const video = document.createElement('video');
         video.autoplay = true;
         video.loop = true;
         video.muted = true;
-        video.src = prs[curr].link;
+        video.src = pr.link;
 
-        body.innerHTML = "";
         body.style.backgroundImage = "none";
-        body.appendChild(video);
-      }
-      else {
+        body.replaceChildren(video);
+      } else {
         // Image
-        body.innerHTML = "";
-        body.style.backgroundImage = "url(" + prs[curr].link + ")";
+        body.style.backgroundImage = `url(${pr.link})`;
+        body.replaceChildren();
       }
-
-      curr++;
-      curr %= prs.length;
 
       // Sleep until next pr
-      let milliseconds_left = (pr_num_since_unix+1) * PR_TIME*1000-Date.now();
+      const milliseconds_left = (pr_num_since_unix + 1) * PR_TIME * 1000 - Date.now();
       timeout = setTimeout(next_pr, milliseconds_left);
     }
 
     // Get list of PRs from /pr
     function get_prs() {
-      let request = new XMLHttpRequest();
-      request.open("GET", "/pr");
-      request.responseType = 'json';
-      request.send();
+      fetch("/pr")
+        .then(response => response.json())
+        .then(new_prs => {
+          const prev_prs = prs;
+          prs = new_prs;
 
-      request.onload = function () {
-        let prev_prs = prs;
-        prs = request.response;
-
-        // Call next_pr on first load
-        if (prev_prs === undefined) {
-          next_pr();
-        }
-      }
+          // Call next_pr on first load
+          if (!prev_prs) {
+            next_pr();
+          }
+        });
     }
 
     // Naively switch to next PR when pressing spacebar
-    document.onkeypress = function (e) {
+    document.addEventListener("keypress", e => {
       if (e.keyCode === 32) {
-        add_image_offset();
+        image_offset++;
         next_pr();
       }
-    };
+    });
     // Naively switch to next PR when touching the screen
-    document.ontouchend = function (e) {
-        add_image_offset();
-        next_pr();
-    };
+    document.addEventListener("touched", () => {
+      image_offset++;
+      next_pr();
+    });
 
     // How often the PR list is updated
-    setInterval(get_prs, PR_FETCH_TIME * 1000)
+    setInterval(get_prs, PR_FETCH_TIME * 1000);
   </script>
 </head>
-
-<body id="body" onload="get_prs()">
-  <br>
+<body onload="get_prs()">
 </body>
-
 </html>
