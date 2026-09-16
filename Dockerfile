@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:python3.11-trixie@sha256:de7e00c5c9721a201f39adac03d23b36904c6765918ee893f9e27a9a8d2aaaed
+FROM ghcr.io/astral-sh/uv:python3.11-trixie@sha256:2af4886919f346130fd08c35825b6a724697687ea3ccf7ded0562fa13e4bc169
 
 RUN mkdir /src
 WORKDIR /src
