@@ -123,7 +123,7 @@
       }
     });
     // Naively switch to next PR when touching the screen
-    document.addEventListener("touched", () => {
+    document.addEventListener("touchend", () => {
       image_offset++;
       next_pr();
     });
